@@ -12,10 +12,11 @@ $f3 = Base::instance();
 // Base f3 = new Base();
 
 //Define a default route
-$f3->route('GET /', function (){
-    // Display the home page
+$f3->route('GET /breakfast', function (){
+    // Display the breakfast page
     $view = new Template();
-    echo $view -> render('views/home.html');
+    echo $view -> render('views/breakfast.html');
+
 });
 
 //Run fat free
