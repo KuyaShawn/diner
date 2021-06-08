@@ -1,36 +1,66 @@
 <?php
 
-// Turn on error reporting
+//Turn on error-reporting
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-//Require the autoload file
-require_once('vendor/autoload.php');
+//Require necessary files
+require_once ('vendor/autoload.php');
 
-//Instantiate the base class
+//Start a session AFTER the autoload***
+session_start();
+
+//Instantiate classes
 $f3 = Base::instance();
-// Base f3 = new Base();
+$con = new Controller($f3);
+$dataLayer = new DataLayer();
 
-//Define a default route
-$f3->route('GET /', function (){
-    // Display the breakfast page
-    $view = new Template();
-    echo $view -> render('views/home.html');
+//Test code
+//$result = $dataLayer->getMeals();
+//var_dump($result);
+//$dataLayer->saveOrder(new Order('taco', 'lunch', 'salsa'));
+/*
+echo "<pre>";
+$result = $dataLayer->getOrders();
+var_dump($result);
+echo "</pre>";
+*/
+
+//Define default route
+$f3->route('GET /', function(){
+
+    $GLOBALS['con']->home();
 });
 
-//Define a default route
-$f3->route('GET /breakfast', function (){
-    // Display the breakfast page
+$f3->route('GET /breakfast', function(){
+
+    //Display the breakfast page
     $view = new Template();
-    echo $view -> render('views/breakfast.html');
+    echo $view->render('views/breakfast.html');
 });
 
-//Define a default route
-$f3->route('GET /lunch', function (){
-    // Display the breakfast page
+$f3->route('GET /breakfast/brunch/mothers-day', function(){
+
+    //Display the breakfast page
     $view = new Template();
-    echo $view -> render('views/lunch.html');
+    echo $view->render('views/mothers-day-brunch.html');
 });
 
-//Run fat free
+$f3->route('GET|POST /order1', function(){
+    $GLOBALS['con']->order1();
+});
+
+$f3->route('GET|POST /order2', function($f3){
+    $GLOBALS['con']->order2();
+});
+
+$f3->route('GET /summary', function(){
+    $GLOBALS['con']->summary();
+});
+
+$f3->route('GET /admin', function(){
+    $GLOBALS['con']->admin();
+});
+
+//Run Fat-Free
 $f3->run();
